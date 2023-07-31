@@ -26,6 +26,34 @@ app.get("/api/hello", function (req, res) {
 
 
 
+app.get('/api/timestamp/:dateString?', (req, res) => {
+  const dateString = req.params.dateString;
+
+  let date;
+  // If the date string is empty, it should be equivalent to new Date(), i.e. the service uses the current timestamp.
+  if (!dateString) {
+    date = new Date();
+  } else {
+    // non-empty dateString
+    // if datestring is integer, convert dateString to an integer
+    if (!isNaN(dateString)) {
+      date = new Date(parseInt(dateString));
+    } else {
+      date = new Date(dateString);
+    }
+  }
+  // If the date string is invalid the api returns an error JSON {"error" : "Invalid Date" }
+  if (date.toString() === 'Invalid Date') {
+    res.json({ error: date.toString() });
+  } else {
+    // If the date string is valid the api returns a JSON like this format {"unix": <date.getTime()>, "utc" : <date.toUTCString()> }
+    res.json({ unix: date.getTime(), utc: date.toUTCString() });
+  }
+});
+
+
+
+
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {
   console.log('Your app is listening on port ' + listener.address().port);
