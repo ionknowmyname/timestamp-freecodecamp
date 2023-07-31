@@ -26,8 +26,8 @@ app.get("/api/hello", function (req, res) {
 
 
 
-app.get('/api/timestamp/:dateString?', (req, res) => {
-  const dateString = req.params.dateString;
+app.get('/api/:date?', (req, res) => {
+  const dateString = req.params.date;
 
   let date;
   // If the date string is empty, it should be equivalent to new Date(), i.e. the service uses the current timestamp.
